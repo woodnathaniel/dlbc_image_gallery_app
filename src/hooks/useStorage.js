@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { projectStorage } from "../firebase/config";
+import { projectStorage, db } from "../firebase/config";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore"; 
+
 
 
 
@@ -8,37 +10,19 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL} from "firebase/s
 
 export const useStorage = (file)=>{
   const [Progress, setProgress] = useState(0);
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState(null);
   const [error, setError] = useState('');
 
   useEffect(() =>{
-    // const storageRef = ref(file.name);
-
-    // storageRef.put(file).on('state_changed', (snap) => {
-    //   let uploadPercentage = (snap.bytesTransferred / snap.totalBytes) * 100;
-    //   setProgress(uploadPercentage);
-    // }, (err)=>{
-    //   setError(err)
-    // }, async ()=>{
-    //   const url = await storageRef.getDownloadUrl();
-    //   setUrl(url);
-    // })
-
- 
-
+  
     const storage = getStorage();
     const storageRef = ref(storage, file.name);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
 
-    // Register three observers:
-    // 1. 'state_changed' observer, called any time the state changes
-    // 2. Error observer, called on failure
-    // 3. Completion observer, called on successful completion
+
     uploadTask.on('state_changed', 
       (snapshot) => {
-        // Observe state change events such as progress, pause, and resume
-        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('Upload is ' + progress + '% done');
 
@@ -46,11 +30,21 @@ export const useStorage = (file)=>{
       (error) => {
         console.error(error);
       }, 
-      () => {
+      async () => {
         
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log('File available at', downloadURL);
-        });
+        const url = await getDownloadURL(uploadTask.snapshot.ref)
+          try {
+            const docRef = await addDoc(collection(db, "images"), {
+              createdAt: new Date(),
+              url: url
+            });
+            console.log("Document written with ID: ", docRef.id);
+          } catch (e) {
+            console.error("Error adding document: ", e);
+          }
+          console.log(url);
+          setUrl(url)
+        
       }
     );
   }, [file]);

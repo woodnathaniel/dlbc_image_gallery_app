@@ -7,7 +7,7 @@ const UploadProgressBar = ({ file, setFile }) => {
 
   return (
     <div>
-      {/* Your component JSX goes here */}
+      
     </div>
   );
 };
