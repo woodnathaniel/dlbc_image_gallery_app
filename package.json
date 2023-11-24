@@ -9,6 +9,7 @@
     "firebase": "^10.6.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^6.20.0",
     "react-scripts": "3.4.1"
   },
   "scripts": {
@@ -31,5 +32,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "daisyui": "^4.4.6",
+    "tailwindcss": "^3.3.5"
   }
 }

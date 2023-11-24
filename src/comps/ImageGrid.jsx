@@ -1,16 +1,16 @@
 import React from 'react'
 import { useFirestore } from '../hooks/useFirestore'
 
-const ImageGrid = () => {
-  const { docs } = useFirestore()
-  console.log(typeof(docs));
-  console.log(docs);
+const ImageGrid = ({setSelected}) => {
+  const { docs } = useFirestore('images')
+  const width = ['img-wrapper', 'img-wrapper-1', 'img-wrapper-2', 'img-wrapper-3']
+ 
 
   return (
-    <div>
+    <div className='img-grid'>
      {docs && docs.map(doc => (
-      <div className='img-grid' key={doc.id}>
-        <img className='img-wrapper' src={doc.url} alt="" />
+      <div className={width[ Math.floor(Math.random() * 4)]} key={doc.id} onClick={()=> setSelected(doc.url)}>
+        <img  src={doc.url} alt="upload here"  />
       </div>
      ))}
     </div>

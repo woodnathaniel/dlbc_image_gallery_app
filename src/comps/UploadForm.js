@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import UploadProgressBar from './UploadProgressBar'
+import { useFirestore } from '../hooks/useFirestore'
 
 const UploadForm = () => {
 
@@ -13,6 +14,7 @@ const UploadForm = () => {
 
     if (selected && fileType.includes(selected.type)){
       setFile(selected)
+      
       setError(null)
     }
     else{
@@ -26,14 +28,16 @@ const UploadForm = () => {
       }
       
     }
+    
   }
+  
   return (
     <div>
       <form>
         <input type='file' onChange={changeHandler}/>
         <div className='output'>
           {error && <div className='error'>{error}</div>}
-          {file && <div>{file.name}</div>}
+          
           {file && <UploadProgressBar file={file} setFile={setFile}/>}
         </div>
       </form>
