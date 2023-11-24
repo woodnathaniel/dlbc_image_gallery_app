@@ -15,14 +15,14 @@ const [selected, setSelected] = useState(null)
 
   return (
     <div className="App">
-      {/* <Title />
+      <Title />
       <UploadForm />
       <ImageGrid  setSelected={setSelected}/>      
-      {selected && <PopUp selected={selected} setSelected={setSelected}/>} */}
-      <Routes>
+      {selected && <PopUp selected={selected} setSelected={setSelected}/>}
+      {/* <Routes>
         <Route path='/' element={<Home />}/>
         <Route path='/signup' element={<SignUp />}/>
-      </Routes>
+      </Routes> */}
      </div>
   );
 };
